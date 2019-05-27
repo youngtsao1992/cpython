@@ -8,10 +8,13 @@ import socket
 import sys
 import weakref
 
+from test import support
+
 # Skip test if we can't import mmap.
 mmap = import_module('mmap')
 
 PAGESIZE = mmap.PAGESIZE
+
 
 class MmapTests(unittest.TestCase):
 
@@ -741,7 +744,9 @@ class MmapTests(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(mmap.mmap, 'madvise'), 'needs madvise')
     def test_madvise(self):
-        size = 8192
+        if support.verbose:
+            print(f"PAGESIZE = {PAGESIZE}")
+        size = 2 * PAGESIZE
         m = mmap.mmap(-1, size)
 
         with self.assertRaisesRegex(ValueError, "madvise start out of bounds"):
