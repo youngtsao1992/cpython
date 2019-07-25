@@ -763,7 +763,7 @@ handle_weakrefs(PyGC_Head *unreachable, PyGC_Head *old)
         _PyObject_ASSERT(op, callback != NULL);
 
         /* copy-paste of weakrefobject.c's handle_callback() */
-        temp = PyObject_CallFunctionObjArgs(callback, wr, NULL);
+        temp = _PyObject_CallOneArg(callback, (PyObject *)wr);
         if (temp == NULL)
             PyErr_WriteUnraisable(callback);
         else
@@ -858,7 +858,6 @@ finalize_garbage(PyGC_Head *collectable)
         PyObject *op = FROM_GC(gc);
         gc_list_move(gc, &seen);
         if (!_PyGCHead_FINALIZED(gc) &&
-                PyType_HasFeature(Py_TYPE(op), Py_TPFLAGS_HAVE_FINALIZE) &&
                 (finalize = Py_TYPE(op)->tp_finalize) != NULL) {
             _PyGCHead_SET_FINALIZED(gc);
             Py_INCREF(op);

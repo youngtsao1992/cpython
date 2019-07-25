@@ -504,14 +504,15 @@ Opening network connections
      transport. If specified, *local_addr* and *remote_addr* should be omitted
      (must be :const:`None`).
 
-   On Windows, with :class:`ProactorEventLoop`, this method is not supported.
-
    See :ref:`UDP echo client protocol <asyncio-udp-echo-client-protocol>` and
    :ref:`UDP echo server protocol <asyncio-udp-echo-server-protocol>` examples.
 
    .. versionchanged:: 3.4.4
       The *family*, *proto*, *flags*, *reuse_address*, *reuse_port,
       *allow_broadcast*, and *sock* parameters were added.
+
+   .. versionchanged:: 3.8
+      Added support for Windows.
 
 .. coroutinemethod:: loop.create_unix_connection(protocol_factory, \
                         path=None, \*, ssl=None, sock=None, \
@@ -1453,7 +1454,7 @@ asyncio ships with two different event loop implementations:
 :class:`SelectorEventLoop` and :class:`ProactorEventLoop`.
 
 By default asyncio is configured to use :class:`SelectorEventLoop`
-on all platforms.
+on Unix and :class:`ProactorEventLoop` on Windows.
 
 
 .. class:: SelectorEventLoop
@@ -1624,8 +1625,7 @@ Wait until a file descriptor received some data using the
      :meth:`loop.create_connection` method.
 
    * Another similar :ref:`example <asyncio_example_create_connection-streams>`
-     using the high-level :func:`asyncio.open_connection` function
-     and streams.
+     using the high-level :func:`asyncio.connect` function and streams.
 
 
 .. _asyncio_example_unix_signals:

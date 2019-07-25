@@ -26,8 +26,6 @@ if sys.platform != 'win32':
     import tty
 
 import asyncio
-from asyncio import base_events
-from asyncio import constants
 from asyncio import coroutines
 from asyncio import events
 from asyncio import proactor_events
@@ -1249,11 +1247,6 @@ class EventLoopTestsMixin:
         server.transport.close()
 
     def test_create_datagram_endpoint_sock(self):
-        if (sys.platform == 'win32' and
-                isinstance(self.loop, proactor_events.BaseProactorEventLoop)):
-            raise unittest.SkipTest(
-                'UDP is not supported with proactor event loops')
-
         sock = None
         local_address = ('127.0.0.1', 0)
         infos = self.loop.run_until_complete(
@@ -2003,10 +1996,6 @@ if sys.platform == 'win32':
 
         def test_writer_callback_cancel(self):
             raise unittest.SkipTest("IocpEventLoop does not have add_writer()")
-
-        def test_create_datagram_endpoint(self):
-            raise unittest.SkipTest(
-                "IocpEventLoop does not have create_datagram_endpoint()")
 
         def test_remove_fds_after_closing(self):
             raise unittest.SkipTest("IocpEventLoop does not have add_reader()")
